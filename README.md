@@ -77,3 +77,23 @@ public class SingletonDemo03 {
 ```
 可以看出，DCL模式没有在方法中使用synchronized关键字，所以只有在实例刚被多个线程调用时会执行同步代码块，在线程拿到锁之后再判断一次实例是否被创建，
 以此确保自己是第一个拿到锁的，然后才新建实例。但是在某些极端情况下，会在前一个线程还没离开时又有线程进入代码块，导致一些不可预见的错误。
+
+### 1.4 通过静态内部类实现懒汉式单例
+静态内部类只有在外部类第一次被调用的时候才会加载，以此可以达到懒加载的目的
+```java
+//静态内部类实现
+public class SingletonDemo04 {
+    private SingletonDemo04(){}
+
+    private static class InnerClass{
+        private static final SingletonDemo04 instance = new SingletonDemo04();
+    }
+
+    public static SingletonDemo04 getInstance(){
+        return InnerClass.instance;
+    }
+}
+
+```
+通过静态内部类创建的实例不会有线程安全问题，看似很完美，但是无法避免用反射加载多个实例，之前的方法也无法避免用反射加载多个实例，
+但是反射无法反射枚举对象，所以可以使用枚举来防止使用反射创建多个实例
