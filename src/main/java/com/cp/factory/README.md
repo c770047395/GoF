@@ -99,3 +99,33 @@ public class TeslaFactory implements CarFactory {
 - 管理上的复杂度： 静态工厂简单
 
 可见工厂方法模式只是符合了开闭原则的规范，但是实际上并没有静态工厂实用，所以实际使用还是静态工厂比较多
+
+## 4.抽象工厂模式
+抽象工厂就是生产工厂的工厂！
+
+例如我们原来有两个产品Phone以及Router，我们定义了一个工厂可以生成这两个产品，只需要定义一个接口
+```java
+//抽象产品工厂
+public interface ProductFactory {
+
+    //生产手机
+    PhoneProduct phoneProduct();
+    //生产路由器
+    RouterProduct routerProduct();
+}
+```
+具体的实现交给具体工厂去管理
+
+最后的使用
+```java
+public class Client {
+    public static void main(String[] args) {
+        System.out.println("========小米系列产品======");
+        ProductFactory factory = new XiaomiFactory();
+        PhoneProduct phone = factory.phoneProduct();
+        RouterProduct router = factory.routerProduct();
+        phone.sendSMS();
+        router.start();
+    }
+}
+```
